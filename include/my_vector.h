@@ -7,10 +7,18 @@
 template <typename T>
 class MyVector {
 public:
-    MyVector() {}
+    // default constructor
+    MyVector() data_(nullptr), size_(0), capacity_(0) {}
     ~MyVector() {}
 
+    void reserver(std::size_t new_capacity) {
+        if (new_capacity <= capacity_) return; 
+    }
+
 private:
+    T*          data_;
+    std::size_t size_;
+    std::size_t capacity_;
 };
 
 #endif
