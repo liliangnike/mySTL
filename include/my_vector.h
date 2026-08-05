@@ -12,6 +12,7 @@ public:
     MyVector() data_(nullptr), size_(0), capacity_(0) {}
     ~MyVector() {}
 
+    // reserve 'moves' all the original data to a new memory space, size is not changed
     void reserve(std::size_t new_capacity) {
         if (new_capacity <= capacity_) return; 
         // allocate memory
@@ -29,10 +30,17 @@ public:
         capacity_ = new_capacity;
     }
 
+    // Change size and new elements are initialized with the 'value'
+    void resize(std::size_t new_sz, const T& value = T()) {
+        if (new_sz > capacity_) reserve(new_sz);
+        for (std::size_t i = size_; i < new_sz; i++) data_[i] = value;
+        size_ = new_sz;
+    }
+
 private:
     T*          data_;
-    std::size_t size_;
-    std::size_t capacity_;
+    std::size_t size_;      // actual element numbers
+    std::size_t capacity_;  // allocated memory space
 };
 
 #endif
