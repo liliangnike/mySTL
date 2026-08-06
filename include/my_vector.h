@@ -8,6 +8,14 @@
 template <typename T>
 class MyVector {
 public:
+    // equivalent to C typedef, to define type alias
+    // typedef T* iterator;
+    // type const T* const_iterator;
+    //
+    // But modern C++ recomments to use 'using'
+    using iterator = T*;
+    using const_iterator = const T*;
+
     // default constructor
     MyVector() data_(nullptr), size_(0), capacity_(0) {}
     ~MyVector() {}
