@@ -20,6 +20,25 @@ public:
     MyVector() data_(nullptr), size_(0), capacity_(0) {}
     ~MyVector() {}
 
+    // No out of range check -> unexpected behaviours
+    T& operator[](std::size_t idx) { return data_[idx]; }
+    const T& operator[](std::size_t idx) { return data_[idx]; }
+
+    // check out of range
+    T& at(std::size_t idx) {
+        if (idx >= size_) throw std::out_of_range("MyVection::at(): index out of range");
+        return data_[idx];
+    }
+    const T& at(std::size_t idx) {
+        if (idx >= size_) throw std::out_of_range("MyVection::at(): index out of range");
+        return data_[idx];
+    }
+
+    T& front() { return data_[0]; }
+    T& back()  { return data_[size_ - 1]; }
+    const T& front() const { return data_[0]; }
+    const T& back()  const { return data_[size_ - 1]; }
+
     // reserve 'moves' all the original data to a new memory space, size is not changed
     void reserve(std::size_t new_capacity) {
         if (new_capacity <= capacity_) return; 
