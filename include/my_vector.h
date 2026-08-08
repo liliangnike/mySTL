@@ -64,6 +64,13 @@ public:
         size_ = new_sz;
     }
 
+    iterator begin() { return data_; }
+    iterator end()   { return data_ + size_; }  // What's difference with back()? back returns last element reference, can be read/write; end return the next position pointer of last position
+    const_iterator begin() const { return data_; }
+    const_iterator end() const { return data_ +size_; }
+    const_iterator cbegin() const { return data_; }
+    const_iterator cend() const { return data_ +size_; }
+
 private:
     T*          data_;
     std::size_t size_;      // actual element numbers
