@@ -71,6 +71,23 @@ public:
     const_iterator cbegin() const { return data_; }
     const_iterator cend() const { return data_ +size_; }
 
+    std::size_t size() const { return size_; }
+    std::size_t capacity() const { return capacity_; }
+    bool empty() const { return size_ == 0; }
+    T* data() const { return data_; }
+    const T* data() const { return data_; }
+
+    bool operator==(const MyVector& other) const {
+        if (size_ != other.size()) return false;
+        for (std::size_t i = 0; i < size_; i++) {
+            if (data_[i] != other.data()[i]) return false;
+        }
+
+        return true;
+    }
+    // operator== already implemented
+    bool operator!=(const MyVector& other) const { return !(*this == other); }
+
 private:
     T*          data_;
     std::size_t size_;      // actual element numbers
