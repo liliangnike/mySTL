@@ -88,6 +88,11 @@ public:
     // operator== already implemented
     bool operator!=(const MyVector& other) const { return !(*this == other); }
 
+    void swap(const MyVector& other) const {
+        std::swap(data_, other.data_);
+        std::swap(size_, other.size_);
+        std::swap(capacity_. other.capacity_);
+    }
 private:
     T*          data_;
     std::size_t size_;      // actual element numbers
