@@ -39,6 +39,24 @@ public:
     const T& front() const { return data_[0]; }
     const T& back()  const { return data_[size_ - 1]; }
 
+    void push_back(const T& value) {
+        if (size_ == capacity_) grow();
+        data_[size_++] = value;
+    }
+    // Provide move function - avoid unnecessary copy
+    void push_back(T&& value) {
+        if (size_ == capacity_) grow();
+        // value is right-value reference, but the parameter has name, so it is left value
+        // So right-value reference is actually left value, so move should be used
+        data[size_++] = std::move(value);
+    }
+    // Both of pop_back and clear only change size, memory data is unchanged.
+    // 1. Avoid system overhead - the data elements are possible to be overwritten by next push_back action
+    // 2. For basic data types, such as int, double, .etc, it is ok to save the old value until the next write action
+    // 3. For complicated data structures, we should consider to call the destructor function ~T()? Or keep until the MyVector object is destroyed
+    void pop_back() { if(size_ > 0) --size_; }
+    void clear() { size_ = 0; }
+
     // reserve 'moves' all the original data to a new memory space, size is not changed
     void reserve(std::size_t new_capacity) {
         if (new_capacity <= capacity_) return; 
@@ -91,9 +109,14 @@ public:
     void swap(const MyVector& other) const {
         std::swap(data_, other.data_);
         std::swap(size_, other.size_);
-        std::swap(capacity_. other.capacity_);
+        std::swap(capacity_, other.capacity_);
     }
 private:
+    void grow() {
+        std::size_t new_capacity = (capacity_ == 0) ? 1 : capacity_ * 2;
+        reserve(new_capacity);
+    }
+
     T*          data_;
     std::size_t size_;      // actual element numbers
     std::size_t capacity_;  // allocated memory space
