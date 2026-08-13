@@ -12,13 +12,22 @@ public:
     // typedef T* iterator;
     // type const T* const_iterator;
     //
-    // But modern C++ recomments to use 'using'
+    // But modern C++ recommends to use 'using'
     using iterator = T*;
     using const_iterator = const T*;
 
     // default constructor
-    MyVector() data_(nullptr), size_(0), capacity_(0) {}
-    ~MyVector() {}
+    MyVector() : data_(nullptr), size_(0), capacity_(0) {}
+
+    explicit MyVector(std::size_t count, const T& value = T())
+        : data_(nullptr), size_(0), capacity_(0)
+    {
+        reserve(count);
+        for (std::size_t i = 0; i < count; i++) data_[i] = value;
+        size_ = count;
+    }
+
+    ~MyVector() { delete[] data_; }
 
     // No out of range check -> unexpected behaviours
     T& operator[](std::size_t idx) { return data_[idx]; }
