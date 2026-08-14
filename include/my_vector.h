@@ -2,6 +2,7 @@
 #define __MY_VECTOR_HEADER_FILE__
 
 #include <algorithm>
+#include <initializer_list>
 // During template instantiation, compiler must know the template declaration and implementation at the same time
 // So for template, all functions declaration and implementation should be in one header file
 // No need to implement in additional cpp file
@@ -19,12 +20,22 @@ public:
     // default constructor
     MyVector() : data_(nullptr), size_(0), capacity_(0) {}
 
+    // Avoid the implicit conversion like MyVector<int> v = 5;
     explicit MyVector(std::size_t count, const T& value = T())
         : data_(nullptr), size_(0), capacity_(0)
     {
         reserve(count);
         for (std::size_t i = 0; i < count; i++) data_[i] = value;
         size_ = count;
+    }
+
+    // C++11 allows to initialize vector with a value set grouped by {}
+    // For example, MyVector<int> = {1, 2, 3, 4, 5}
+    MyVector(std::initializer_list<T> init)
+        : data_(nullptr), size_(0), capacity_(0)
+    {
+        reserve(init.size());
+        for (const auto& val : init) data_[size++] = val;
     }
 
     ~MyVector() { delete[] data_; }
