@@ -40,6 +40,35 @@ public:
 
     ~MyVector() { delete[] data_; }
 
+    // copy constructor - deepcopy
+    // shallow copy - 2 objects share one memory
+    MyVector(const MyVector& other)
+        : data_(nullptr), size_(0), capacity_(0)
+    {
+        reserve(other.size_);
+        std::copy(other.begin(), other.end(), data_);
+        size_ = other.size_;
+    }
+
+    // assign constructor
+    // check if a = a, delete then copy the memory that already was free
+    MyVector& operator=(const MyVector& other)
+        : data_(nullptr), size_(0), capacity_(0)
+    {
+        if (this != &other) {
+            // free itself
+            delete [] data_;
+            data_ = nullptr;
+            size_ 0 ;
+            capacity_ = 0;
+            reserve(other.size_);
+            std::copy(other.begin(), other.end(), data_);
+            size_ = other.size_;
+        }
+
+        return *this;
+    }
+
     // No out of range check -> unexpected behaviours
     T& operator[](std::size_t idx) { return data_[idx]; }
     const T& operator[](std::size_t idx) { return data_[idx]; }
