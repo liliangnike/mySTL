@@ -41,7 +41,7 @@ public:
     ~MyVector() { delete[] data_; }
 
     // copy constructor - deepcopy
-    // shallow copy - 2 objects share one memory
+    // shallow copy - 2 objects share one memory, double-free when destructing
     MyVector(const MyVector& other)
         : data_(nullptr), size_(0), capacity_(0)
     {
@@ -51,9 +51,8 @@ public:
     }
 
     // assign constructor
-    // check if a = a, delete then copy the memory that already was free
+    // why check if a = a? if a = a, free the data memory,  then will copy the memory that already was free
     MyVector& operator=(const MyVector& other)
-        : data_(nullptr), size_(0), capacity_(0)
     {
         if (this != &other) {
             // free itself
@@ -64,6 +63,36 @@ public:
             reserve(other.size_);
             std::copy(other.begin(), other.end(), data_);
             size_ = other.size_;
+        }
+
+        return *this;
+    }
+
+    // move constructor
+    // For example, MyVector<int> v2(std::move(v1))
+    //          or, MyVector<int> v3 = std::move(v1)
+    //
+    // noexcept - tell compiler that the constructor does not throw out exceptions
+    MyVector(MyVector&& other) noexcept
+        : data_(other.data_), size_(other.size_), capacity_(other.capacity_)
+    {
+        other.data_ = nullptr;
+        other.size_ = 0;
+        other.capacity_ = 0;
+    }
+
+    // move assign operator
+    // move constructor is to create new objects, this is to assign other to an existing constructor
+    MyVector& operator=(MyVector&& other) noexcept
+    {
+        if (this != &other) {
+            delete [] data_;
+            data_ = other.data_;
+            size_ = other.size_;
+            capacity_ = other.capacity_;
+            other.data_ = nullptr;
+            other.size_ = 0;
+            other.capacity_ = 0;
         }
 
         return *this;
