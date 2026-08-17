@@ -200,4 +200,6 @@ private:
     std::size_t capacity_;  // allocated memory space
 };
 
+template <typename T>
+void swap(MyVector<T>& a, MyVector<T>& b) noexcept { a.swap(b); }
 #endif
