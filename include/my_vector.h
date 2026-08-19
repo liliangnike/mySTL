@@ -1,8 +1,10 @@
 #ifndef __MY_VECTOR_HEADER_FILE__
 #define __MY_VECTOR_HEADER_FILE__
 
+#include <stdexcept>
 #include <algorithm>
 #include <initializer_list>
+#include <utility>
 // During template instantiation, compiler must know the template declaration and implementation at the same time
 // So for template, all functions declaration and implementation should be in one header file
 // No need to implement in additional cpp file
@@ -58,7 +60,7 @@ public:
             // free itself
             delete [] data_;
             data_ = nullptr;
-            size_ 0 ;
+            size_ = 0 ;
             capacity_ = 0;
             reserve(other.size_);
             std::copy(other.begin(), other.end(), data_);
@@ -100,14 +102,15 @@ public:
 
     // No out of range check -> unexpected behaviours
     T& operator[](std::size_t idx) { return data_[idx]; }
-    const T& operator[](std::size_t idx) { return data_[idx]; }
+    // const is mandatory.
+    const T& operator[](std::size_t idx) const { return data_[idx]; }
 
     // check out of range
     T& at(std::size_t idx) {
         if (idx >= size_) throw std::out_of_range("MyVection::at(): index out of range");
         return data_[idx];
     }
-    const T& at(std::size_t idx) {
+    const T& at(std::size_t idx) const {
         if (idx >= size_) throw std::out_of_range("MyVection::at(): index out of range");
         return data_[idx];
     }
@@ -170,7 +173,7 @@ public:
     std::size_t size() const { return size_; }
     std::size_t capacity() const { return capacity_; }
     bool empty() const { return size_ == 0; }
-    T* data() const { return data_; }
+    T* data() { return data_; }
     const T* data() const { return data_; }
 
     bool operator==(const MyVector& other) const {
@@ -184,7 +187,7 @@ public:
     // operator== already implemented
     bool operator!=(const MyVector& other) const { return !(*this == other); }
 
-    void swap(const MyVector& other) const {
+    void swap(MyVector& other) noexcept {
         std::swap(data_, other.data_);
         std::swap(size_, other.size_);
         std::swap(capacity_, other.capacity_);
