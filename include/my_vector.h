@@ -129,7 +129,7 @@ public:
         if (size_ == capacity_) grow();
         // value is right-value reference, but the parameter has name, so it is left value
         // So right-value reference is actually left value, so move should be used
-        data[size_++] = std::move(value);
+        data_[size_++] = std::move(value);
     }
     // Both of pop_back and clear only change size, memory data is unchanged.
     // 1. Avoid system overhead - the data elements are possible to be overwritten by next push_back action
