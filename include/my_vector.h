@@ -37,7 +37,7 @@ public:
         : data_(nullptr), size_(0), capacity_(0)
     {
         reserve(init.size());
-        for (const auto& val : init) data_[size++] = val;
+        for (const auto& val : init) data_[size_++] = val;
     }
 
     ~MyVector() { delete[] data_; }

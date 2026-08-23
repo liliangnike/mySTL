@@ -26,9 +26,24 @@ void test_basic() {
     PASS();
 }
 
+void test_initializer_list() {
+    TEST("MyVector initializer_list");
+
+    MyVector<int> v = {1, 2, 3, 4, 5};
+    assert(v.size() == 5);
+    assert(v[0] == 1);
+    assert(v[4] == 5);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== MyVector Tests ===\n";
+    
+    test_basic();
+    test_initializer_list();
+
     std::cout << "\nAll tests passed!\n";
     return 0;
 }
