@@ -37,12 +37,31 @@ void test_initializer_list() {
     PASS();
 }
 
+void test_copy() 
+{
+    TEST("MyVector copy constructor/assignment");
+
+    MyVector<int> v1 = {1, 2, 3};
+    MyVector<int> v2(v1);
+    assert(v1 == v2);
+
+    v2[2] = 10;
+    assert(v1[2] == 3);
+
+    MyVector<int> v3;
+    v3 = v1;
+    assert(v1 == v3);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== MyVector Tests ===\n";
     
     test_basic();
     test_initializer_list();
+    test_copy();
 
     std::cout << "\nAll tests passed!\n";
     return 0;

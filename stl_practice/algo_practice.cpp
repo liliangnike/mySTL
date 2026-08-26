@@ -5,6 +5,7 @@
 
 #define TEST(name) std::cout << "[ALGO] " << name << " ... "
 #define PASS()     std::cout << "PASS\n";
+
 void practice_sort()
 {
     TEST("sort / stable_sort");
@@ -16,11 +17,38 @@ void practice_sort()
     PASS();
 }
 
+void practice_find()
+{
+    TEST("find / find_if ");
+
+    std::vector<int> v = {1, 2, 3, 4, 5, 6};
+
+    auto it = std::find(v.begin(), v.end(), 3);
+    assert(it != v.end() && *it == 3);
+    assert(std::distance(v.begin(), it) == 2);
+
+    auto it1 = std::find(v.begin(), v.end(), 100);
+    assert(it1 == v.end());
+
+    // find the 1st x that meets condition
+    auto it2 = std::find_if(v.begin(), v.end(),
+            [](int x){ return x > 4; } );
+    assert(*it2 == 5);
+
+    // find the 1st x that does not meet condition
+    auto it3 = std::find_if_not(v.begin(), v.end(),
+            [](int x){ return x < 3; } );
+    assert(*it3 == 3);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Algorithm Practice === \n"; 
 
     practice_sort();
+    practice_find();
 
     std::cout << "\n=== All algorithm practice cases passed!\n";
     return 0;
