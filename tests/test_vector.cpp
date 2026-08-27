@@ -55,6 +55,26 @@ void test_copy()
     PASS();
 }
 
+void test_move()
+{
+    TEST("MyVector move constructor/assignment");
+
+    MyVector<int> v1 = {1, 2, 3, 4, 5};
+
+    MyVector<int> v2(std::move(v1));
+    assert(v2.size() == 5);
+    assert(v2[0] == 1);
+    assert(v1.empty());
+    assert(v1.size() == 0);
+
+    MyVector<int> v3;
+    v3 = std::move(v2);
+    assert(v3.size() == 5);
+    assert(v2.size() == 0);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== MyVector Tests ===\n";
@@ -62,6 +82,7 @@ int main()
     test_basic();
     test_initializer_list();
     test_copy();
+    test_move();
 
     std::cout << "\nAll tests passed!\n";
     return 0;

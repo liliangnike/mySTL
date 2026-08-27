@@ -43,12 +43,29 @@ void practice_find()
     PASS();
 }
 
+void practice_count()
+{
+    TEST("count / count_if ");
+
+    std::vector<int> v = {1, 2, 2, 3, 2, 4, 5};
+
+    int cnt = std::count(v.begin(), v.end(), 2);
+    assert(cnt == 3);
+
+    int even = std::count_if(v.begin(), v.end(),
+            [](int x){ return x % 2 == 0; } );
+    assert(even == 4);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Algorithm Practice === \n"; 
 
     practice_sort();
     practice_find();
+    practice_count();
 
     std::cout << "\n=== All algorithm practice cases passed!\n";
     return 0;
