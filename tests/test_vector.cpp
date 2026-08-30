@@ -75,6 +75,25 @@ void test_move()
     PASS();
 }
 
+void test_iterator()
+{
+    TEST("MyVector iterator");
+
+    MyVector<int> v = {1, 2, 3, 4, 5};
+
+    int sum = 0;
+    for (const auto& x : v) sum += x;
+    assert(sum == 15);
+  
+    sum = 0;
+    for (auto it = v.begin(); it != v.end(); it++) {
+        sum += *it;
+    }
+    assert(sum == 15);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== MyVector Tests ===\n";
@@ -83,6 +102,7 @@ int main()
     test_initializer_list();
     test_copy();
     test_move();
+    test_iterator();
 
     std::cout << "\nAll tests passed!\n";
     return 0;

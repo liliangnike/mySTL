@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <numeric>  // std::accumulate
 #include <cassert>
 
 #define TEST(name) std::cout << "[ALGO] " << name << " ... "
@@ -59,6 +60,27 @@ void practice_count()
     PASS();
 }
 
+void practice_accumulate()
+{
+    TEST("accumulate / transform");
+
+    std::vector<int> v = {1, 2, 3, 4, 5};
+    // accumulate to get sum
+    int sum = std::accumulate(v.begin(), v.end(), 0);   // 0 is not only the initial value, but also determines the return result data type
+    assert(sum == 15);
+
+    // accumulate to get product - 1, using multiplies
+    int product1 = std::accumulate(v.begin(), v.end(), 1, std::multiplies<int>());
+    assert(product1 == 120);
+    
+    // accumulate to get product - 2, using lambda
+    int product2 = std::accumulate(v.begin(), v.end(), 1, 
+                   [](int acc, int x){ return acc * x; });
+    assert(product2 == 120);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Algorithm Practice === \n"; 
@@ -66,6 +88,7 @@ int main()
     practice_sort();
     practice_find();
     practice_count();
+    practice_accumulate();
 
     std::cout << "\n=== All algorithm practice cases passed!\n";
     return 0;
