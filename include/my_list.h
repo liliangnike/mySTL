@@ -15,7 +15,7 @@ private:
         Node* prev;
         Node* next;
 
-        // No need to construct data objects in the external of Node ( this is additional system const )
+        // No need to construct data objects in the external of Node ( the construction requires additional system cost )
         // Pass data constructor parameters into Node. When Node is constructed, data object is constructed at the same time
         //
         // std::forward -> Perfecr forwarding, keep parameters' original left/right value attributes
@@ -27,10 +27,13 @@ private:
         {}
     };
 public:
-    MyList() : size_(0) {}
-    ~MyList() {}
+    MyList() : sentinel_(new Node()), size_(0) {}
+    ~MyList() {
+        delete sentinel_;
+    }
 
 private:
+    Node* sentinel_;
     std::size_t size_;
 };
 
