@@ -27,6 +27,19 @@ private:
         {}
     };
 public:
+    struct Iterator {
+        Node* node;
+
+        explicit Iterator(Node* n) : node(n) {}
+
+        // operator * return reference of node data itself
+        T& operator*() { return node->data; }
+        T* operator->() { return &node->data; }
+    };
+
+    struct ConstIterator {
+    };
+
     MyList() : sentinel_(new Node()), size_(0) {}
     ~MyList() {
         delete sentinel_;
