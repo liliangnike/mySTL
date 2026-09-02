@@ -35,6 +35,38 @@ public:
         // operator * return reference of node data itself
         T& operator*() { return node->data; }
         T* operator->() { return &node->data; }
+
+        // pre-increment
+        // ++it, move to next element and then return the reference
+        Iterator operator++() {
+            node = node->next;
+            return *this;
+        }
+
+        // post-increment
+        // it++, return the current reference firstly and then move to next element
+        // 'int' is dummy operator to distinct pre/post-increment
+        Iterator operator++(int) {
+            Iterator tmp = *this;
+            node = node->next;
+            return tmp;
+        }
+
+        // --it
+        Iterator operator--() {
+            node = node->prev;
+            return *this;
+        }
+
+        // it--
+        Iterator operator--(int) {
+            Iterator tmp = *this;
+            node = node->prev;
+            return tmp;
+        }
+
+        bool operator==(const Iterator& other) { return node == other.node; }
+        bool operator!=(const Iterator& other) { return node != other.node; }
     };
 
     struct ConstIterator {
