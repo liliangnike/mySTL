@@ -38,7 +38,7 @@ public:
 
         // pre-increment
         // ++it, move to next element and then return the reference
-        Iterator operator++() {
+        Iterator& operator++() {
             node = node->next;
             return *this;
         }
@@ -53,7 +53,7 @@ public:
         }
 
         // --it
-        Iterator operator--() {
+        Iterator& operator--() {
             node = node->prev;
             return *this;
         }
@@ -70,12 +70,41 @@ public:
     };
 
     struct ConstIterator {
+        const Node* node;
+
+        explicit ConstIterator(Node* n) : node(n) {}
+
+        // allows Iterator to be converted into ConstIterator implicitly
+        ConstIterator(const Iterator& it) : node(it.node) {}
+
+        const T& operator*() const { return node->data; }
+        const T* operator->() const { return &node->data; }
+
+        ConstIterator& operator++() { node = node->next; return *this; } 
+        ConstIterator operator++(int) {
+            Iterator tmp = *this;
+            node = node->next;
+            return tmp;
+        }
+
+        ConstIterator& operator--() { node = node->prev; return *this; } 
+        ConstIterator operator--(int) {
+            Iterator tmp = *this;
+            node = node->prev;
+            return tmp;
+        }
+
+        bool operator==(const ConstIterator& other) const { return node == other.node; }
+        bool operator!=(const ConstIterator& other) const { return node != other.node; }
     };
 
     MyList() : sentinel_(new Node()), size_(0) {}
     ~MyList() {
         delete sentinel_;
     }
+
+    using iterator = Iterator;
+    using const_iterator = ConstIterator;
 
 private:
     Node* sentinel_;
