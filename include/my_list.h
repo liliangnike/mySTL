@@ -143,6 +143,37 @@ public:
         return Iterator(new_node);
     }
 
+    // erase the node that pos points and return the iterator of next element
+    // Before erasing, ... ←→ prev ←→ target ←→ next ←→ ...
+    // After erasing, ... ←→ prev ←→ next ←→ ...
+    iterator erase(iterator pos) {
+        if (pos == end()) throw std::out_of_range("MyList::erase: end iterator");
+        Node* target = pos.node;
+        Node* prev_node = target->prev;
+        Node* next_node = target->next;
+        
+        prev_node->next = next_node;
+        next_node->prev = prev_node;
+
+        delete target;
+        --size_;
+
+        return Iterator(next_node);
+    }
+
+    // clear all node, only keep sentinel
+    void clear() {
+        Node* current = sentinel_->next;    // begin
+        while (current != sentinel_) {      // not end. If end, then while loop stops
+            Node* next = current->next;
+            delete current;
+            current = next;
+        }
+        sentinel_->prev = sentinel_;
+        sentinel_->next = sentinel_;
+        size_ = 0;
+    }
+
     void swap(MyList& other) noexcept {
         std::swap(sentinel_, other.sentinel_);
         std::swap(size_, other.size_);
