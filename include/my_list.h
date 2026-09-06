@@ -109,6 +109,42 @@ public:
     using iterator = Iterator;
     using const_iterator = ConstIterator;
 
+    // access data element
+    T& front() { return sentinel_->next->data; }
+    T& back()  { return sentinel_->prev->data; }
+    const T& front() const { return sentinel_->next->data; }
+    const T& back() const  { return sentinel_->prev->data; }
+
+    // modify
+
+    // push_back: push data after the end 
+    // Before: ... ←→ last ←→ sentinel
+    // After : ... ←→ last ←→ new_node ←→ sentinel
+    void push_back(const T& value) {
+        insert(end(), value);
+    }
+
+    void push_back(T&& value) {
+        insert(end(), std::move(value));
+    }
+
+    // push_front: push data before the head
+    void push_front(const T& value) {
+        insert(begin(), value);
+    }
+
+    void push_front(T&& value) {
+        insert(begin(), std::move(value));
+    }
+
+    void pop_back() {
+        erase(Iterator(sentinel_->prev));
+    }
+    
+    void pop_front() {
+        erase(begin());
+    }
+
     // insert new element and return the iterator of the new element
     // Before inserting: ... ←→ prev_node ←→ pos_node ←→ ...
     // After inserting : ... ←→ prev_node ←→ new_node ←→ pos_node ←→ ...
