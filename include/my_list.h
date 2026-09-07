@@ -102,8 +102,25 @@ public:
         sentinel_->prev = sentinel_;
         sentinel_->next = sentinel_;
     }
+   
+    // MyList() is Delegating Constructor - C++ 11
+    // You can also code like: MyList(std::initializer_list<T> init) : sentinel_(new Node()), size_(0)
+    //
+    // Delegating constructor can make code clean
+    // But delegating constructor and initialize value list could not co-exist.
+    //
+    MyList(std::initializer_list<T> init) : MyList() {
+        for (const auto& val : init) push_back(val);
+    }
+
+    // 3 rules - destructor, copy constructor and copy assignment
     ~MyList() {
+        clear();
         delete sentinel_;
+    }
+
+    MyList(const MyList& other) : MyList() {
+        for (const auto& val : other) push_back(val);
     }
 
     using iterator = Iterator;
