@@ -120,8 +120,27 @@ public:
     }
 
     MyList(const MyList& other) : MyList() {
+        // loop iterator, not node
+        // Same as:
+        // for(auto it = other.begin; it != end(); it++) {
+        //     const auto& val = *it;    // * call operator * -> node->data.
+        //     push_back(val);
+        // }
         for (const auto& val : other) push_back(val);
     }
+
+    MyList& operator=(const MyList& other)
+    {
+        // refer to my_vector on this check
+        if (this != &other) {
+            clear();
+            for (const auto& val : other) push_back(val);
+        }
+
+        return *this;
+    }
+
+    // 5 rules - 3 rules + move constructor and move assignment
 
     using iterator = Iterator;
     using const_iterator = ConstIterator;
