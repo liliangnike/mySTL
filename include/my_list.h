@@ -142,6 +142,15 @@ public:
 
     // 5 rules - 3 rules + move constructor and move assignment
 
+    // All data in the linked list resides on the heap; moving it requires only transferring ownership of the sentinel node.
+    MyList(MyList&& other) noexcept : sentinel_(other.sentinel_), size_(other.size_) {
+        // assign other sentinel with an empty node to make 'other' can destruct safely
+        other.sentinel_ = new Node();
+        other.sentinel_->prev = other.sentinel_;
+        other.sentinel_->next = other.sentinel_;
+        other.size_ = 0;
+    }
+
     using iterator = Iterator;
     using const_iterator = ConstIterator;
 
