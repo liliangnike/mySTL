@@ -114,11 +114,14 @@ public:
     }
 
     // 3 rules - destructor, copy constructor and copy assignment
+    //
+    // 1
     ~MyList() {
         clear();
         delete sentinel_;
     }
 
+    // 2
     MyList(const MyList& other) : MyList() {
         // loop iterator, not node
         // Same as:
@@ -129,6 +132,7 @@ public:
         for (const auto& val : other) push_back(val);
     }
 
+    // 3
     MyList& operator=(const MyList& other)
     {
         // refer to my_vector on this check
@@ -142,6 +146,7 @@ public:
 
     // 5 rules - 3 rules + move constructor and move assignment
 
+    // 4
     // All data in the linked list resides on the heap; moving it requires only transferring ownership of the sentinel node.
     MyList(MyList&& other) noexcept : sentinel_(other.sentinel_), size_(other.size_) {
         // assign other sentinel with an empty node to make 'other' can destruct safely
@@ -151,6 +156,23 @@ public:
         other.size_ = 0;
     }
 
+    // 5
+    MyList& operator=(MyList&& other) noexcept
+    {
+        if (this != &other) {
+            clear();
+            delete sentinel_;
+            sentinel_ = other.sentinel_;
+            size_ = other.size_;
+            other.sentinel_ = new Node();
+            other.sentinel_->prev = other.sentinel_;
+            other.sentinel_->next = other.sentinel_;
+            other.size_ = 0;
+        }
+
+        return *this;
+    }
+    
     using iterator = Iterator;
     using const_iterator = ConstIterator;
 
