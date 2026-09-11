@@ -84,6 +84,15 @@ void practice_ordered()
     assert(fd == mp.end());
     assert(mp.size() == 4);
 
+    // multiset / multimap: key values could be duplicate
+    std::multiset<int> ms = {1, 2, 2, 3};
+    assert(ms.count(2) == 2);
+
+    std::multimap<std::string, int> mm;
+    mm.emplace("math", 95);
+    mm.emplace("math", 80);
+    assert(mm.count("math") == 2);
+
     PASS();
 }
 
