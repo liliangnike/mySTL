@@ -5,7 +5,9 @@
 #include <list>
 #include <deque>
 #include <set>
+#include <unordered_set>
 #include <map>
+#include <unordered_map>
 #include <algorithm>
 
 #define TEST(name) std::cout << "[CONT] " << name << " ... "
@@ -96,12 +98,36 @@ void practice_ordered()
     PASS();
 }
 
+void practice_unordered()
+{
+    TEST("unordered_set / unordered_map");
+
+    std::unordered_set<int> us = {3, 1, 2, 2};
+    assert(us.size() == 3);
+    assert(us.count(1) == 1);
+    us.erase(1);
+    assert(us.find(1) == us.end());
+
+    std::unordered_map<std::string, int> um;
+    um["apple"] = 3;
+    um["banana"] = 5;
+    assert(um["apple"] == 3);
+    assert(um.size() == 2);
+
+    int sum = 0;
+    for (const auto& data : um) sum += data.second;
+    assert(sum == 8);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Container Practice ===\n";
     
     practice_sequence();
     practice_ordered();
+    practice_unordered();
 
     std::cout << "\nAll container practices passed!\n";
     return 0;
