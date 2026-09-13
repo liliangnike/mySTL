@@ -8,7 +8,10 @@
 #include <unordered_set>
 #include <map>
 #include <unordered_map>
+#include <queue>
+#include <stack>
 #include <algorithm>
+#include <functional>
 
 #define TEST(name) std::cout << "[CONT] " << name << " ... "
 #define PASS()     std::cout << "PASS\n"
@@ -118,6 +121,47 @@ void practice_unordered()
     for (const auto& data : um) sum += data.second;
     assert(sum == 8);
 
+    // TODO, - unordered_map rehash functions, bucket_count, load_factor and max_load_factor will be studied in future
+
+    PASS();
+}
+
+void practice_adapters()
+{
+    TEST("stack / queue / priority_queue");
+
+    std::stack<int> st;
+    st.push(1);
+    st.push(2);
+    st.push(3);
+    assert(st.top() == 3);
+    st.pop();
+    assert(st.top() == 2);
+    assert(st.size() == 2);
+
+    // Compared with vector, queue has high-efficient function pop/front
+    std::queue<int> q;
+    q.push(10);
+    q.push(20);
+    assert(q.front() == 10);
+    assert(q.back() == 20);
+    q.pop();
+    assert(q.front() == 20);
+   
+    // priority_queue -> default is max_heap, top is always the max value
+    std::priority_queue<int> max_heap;
+    max_heap.push(30);
+    max_heap.push(10);
+    max_heap.push(20);
+    assert(max_heap.top() == 30);
+
+    // For priority_queue min_heap, use greater<>. top is always the min value
+    std::priority_queue<int, std::vector<int>, std::greater<int>> min_heap;
+    min_heap.push(30);
+    min_heap.push(10);
+    min_heap.push(20);
+    assert(min_heap.top() == 10);
+
     PASS();
 }
 
@@ -128,6 +172,7 @@ int main()
     practice_sequence();
     practice_ordered();
     practice_unordered();
+    practice_adapters();
 
     std::cout << "\nAll container practices passed!\n";
     return 0;
