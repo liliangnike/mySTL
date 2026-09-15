@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <queue>
 #include <stack>
+#include <tuple>
 #include <algorithm>
 #include <functional>
 
@@ -165,6 +166,33 @@ void practice_adapters()
     PASS();
 }
 
+void practice_pair_tuple()
+{
+    TEST("pair / tuple ");
+
+    // pair only has 2 elements
+    std::pair<std::string, int> p{"age", 18};
+    assert(p.first == "age");
+    assert(p.second == 18);
+
+    auto p1 = std::make_pair(1, 3.14);
+    assert(p1.first == 1);
+
+    // tuple can contains single, multiple or any number element
+    std::tuple<int, std::string, double> t{1, "hi", 2.5};
+    assert(std::get<0>(t) == 1);
+    assert(std::get<1>(t) == "hi");
+
+    // C++ 17 structured binding
+    auto [k, v] = p;
+    assert(k == "age" && v == 18);
+
+    auto [x, y, z] = t;
+    assert(x == 1 && y == "hi" && z == 2.5);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Container Practice ===\n";
@@ -173,6 +201,7 @@ int main()
     practice_ordered();
     practice_unordered();
     practice_adapters();
+    practice_pair_tuple();
 
     std::cout << "\nAll container practices passed!\n";
     return 0;
