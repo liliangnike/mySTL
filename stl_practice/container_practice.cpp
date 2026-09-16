@@ -193,6 +193,28 @@ void practice_pair_tuple()
     PASS();
 }
 
+void practice_string()
+{
+    TEST("string");
+
+    std::string s = "hello";
+    s += " world";
+    assert(s == "hello world");
+    assert(s.size() == 11);
+    assert(s.substr(0, 5) == "hello");
+    assert(s.find("world") == 6);
+    assert(s.find("xyz") == std::string::npos);
+
+    s.replace(0, 5, "hi");
+    assert(s == "hi world");
+
+    std::map<std::string, int> freq;
+    for (char c : std::string("abcdsasa")) ++freq[std::string(1, c)];
+    assert(freq["a"] == 3);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Container Practice ===\n";
@@ -202,6 +224,7 @@ int main()
     practice_unordered();
     practice_adapters();
     practice_pair_tuple();
+    practice_string();
 
     std::cout << "\nAll container practices passed!\n";
     return 0;
