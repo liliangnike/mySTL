@@ -2,6 +2,7 @@
 #include <cassert>
 #include <type_traits>
 #include <map>
+#include <vector>
 
 #define TEST(name) std::cout << "[MODERN] " << name << " ... ";
 #define PASS()     std::cout << "PASS\n"
@@ -49,10 +50,41 @@ void practice_auto_decltype()
     PASS();
 }
 
+void practice_range_structured()
+{
+    TEST("range-for / C++17 structured binding");
+    
+    std::vector<int> v = {1, 2, 3};
+    int sum = 0;
+    for (int x : v) sum += x;   // copy objects
+    assert(sum == 6);
+
+    for (int& x : v) x *= 2;    // reference, can be modified
+    assert(v[0] == 2 && v[1] == 4 && v[2] == 6);
+    
+    sum = 0;
+    for (const int& x : v) sum += x;    // const reference, not copy objects
+    assert(sum == 12);
+
+    std::map<std::string, int> mp = {{"alice", 90}, {"bob", 80}};
+    int total = 0;
+    for (const auto& [name, score] : mp) { // C++17 structured binding
+        (void) name;
+        total += score;
+    }
+    assert(total == 170);
+
+    auto [left, right] = std::pair<int, int>{1, 10};
+    assert(left == 1 && right == 10);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== Modern C++ Practice ===\n";
     practice_auto_decltype();
+    practice_range_structured();
     
     std::cout << "\nAll modern C++ practices passed!\n";
     return 0;
