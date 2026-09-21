@@ -3,6 +3,7 @@
 #include <type_traits>
 #include <map>
 #include <vector>
+#include <memory>
 
 #define TEST(name) std::cout << "[MODERN] " << name << " ... ";
 #define PASS()     std::cout << "PASS\n"
@@ -80,11 +81,25 @@ void practice_range_structured()
     PASS();
 }
 
+void practice_smart_ptr()
+{
+    TEST("unique_ptr / shared_ptr / weak_ptr");
+
+    std::unique_ptr<int> u = std::make_unique<int>(42);
+    assert(*u == 42);
+    std::unique_ptr<int> u1 = std::move(u);
+    assert(*u1 == 42);
+    assert(u == nullptr);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== Modern C++ Practice ===\n";
     practice_auto_decltype();
     practice_range_structured();
+    practice_smart_ptr();
     
     std::cout << "\nAll modern C++ practices passed!\n";
     return 0;
