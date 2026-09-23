@@ -91,6 +91,30 @@ void practice_smart_ptr()
     assert(*u1 == 42);
     assert(u == nullptr);
 
+    auto arr = std::make_unique<int[]>(3);
+    arr[0] = 1;
+    arr[1] = 2;
+    arr[2] = 3;
+    assert(arr[1] == 2);
+
+    std::shared_ptr<int> s1 = std::make_shared<int>(7);     // s1 -> control block, user_count++(1) -> int*
+    {
+        std::shared_ptr<int> s2 = s1;                           // s1 and s2 -> control block, user_count++ (2) -> int*
+        assert(s1.use_count() == 2 && s2.use_count() == 2);
+    } // block to check the shared_ptr scope, s2 is destroyed when leaving the block
+    assert(s1.use_count() == 1);
+
+    std::weak_ptr<int> w = s1;  // w observes s1
+    assert(!w.expired());
+    {
+        auto locked = w.lock(); //convert it into shared_ptr
+        assert(locked && *locked == 7);
+        assert(s1.use_count() == 2);
+    }
+    s1.reset();
+    assert(w.expired());        // s1 was already reset
+    assert(w.lock() == nullptr);
+
     PASS();
 }
 
