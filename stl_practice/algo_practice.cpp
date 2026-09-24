@@ -74,6 +74,12 @@ void practice_accumulate()
     assert(product1 == 120);
     
     // accumulate to get product - 2, using lambda
+    // Every C++ algorithm has its own signature & semantic for the passed lambda
+    // Here the lambda is equivalent to:
+    // for (int x : v) {
+    //      acc *= x;
+    // }
+    // TODO, learn the lambda specific rules for all algorithm functions like sort, find_if, for_each, .etc
     int product2 = std::accumulate(v.begin(), v.end(), 1, 
                    [](int acc, int x){ return acc * x; });
     assert(product2 == 120);
