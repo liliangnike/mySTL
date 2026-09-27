@@ -81,6 +81,25 @@ void practice_range_structured()
     PASS();
 }
 
+void practice_lambda()
+{
+    TEST("lambda");
+
+    int x = 10, y = 20;
+
+    // [] capture by value - new copied 'x' object
+    auto by_val = [x]() { return x + 1; };
+    x = 99;
+    assert (by_val() == 11);
+
+    // [&] capture by reference
+    auto by_ref = [&y]() { y += 1; };
+    by_ref();
+    assert(y == 21);
+
+    PASS();
+}
+
 void practice_smart_ptr()
 {
     TEST("unique_ptr / shared_ptr / weak_ptr");
@@ -123,6 +142,7 @@ int main()
     std::cout << "=== Modern C++ Practice ===\n";
     practice_auto_decltype();
     practice_range_structured();
+    practice_lambda();
     practice_smart_ptr();
     
     std::cout << "\nAll modern C++ practices passed!\n";
