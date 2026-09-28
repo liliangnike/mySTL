@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 #define TEST(name) std::cout << "[MODERN] " << name << " ... ";
 #define PASS()     std::cout << "PASS\n"
@@ -90,12 +91,28 @@ void practice_lambda()
     // [] capture by value - new copied 'x' object
     auto by_val = [x]() { return x + 1; };
     x = 99;
-    assert (by_val() == 11);
+    assert (by_val() == 11);    // new 'x' object value is unchangable. See below mutable example
 
     // [&] capture by reference
     auto by_ref = [&y]() { y += 1; };
     by_ref();
     assert(y == 21);
+
+    // copied object of the captured parameter only can be changed in 'mutuable' return type
+    int z = 5;
+    auto mut = [z]() mutable { z += 1; return z; };
+    assert(mut() == 6);
+    assert( z == 5);        // original external parameter is not changed
+
+    // generic lambda
+    auto add = [](auto a, auto b) { return a + b; };
+    assert(add(1, 2) == 3);
+    assert(add(std::string("a"), std::string("b")) == "ab");
+
+    // used in algorithm utilities
+    std::vector<int> vec = {1, 2, 3, 4, 5};
+    auto n = std::count_if(vec.begin(), vec.end(), [](int n) { return n > 3; });
+    assert(n == 2);
 
     PASS();
 }
