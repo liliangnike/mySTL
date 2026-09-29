@@ -154,6 +154,16 @@ void practice_smart_ptr()
     PASS();
 }
 
+struct Wdiget {
+    int* p;
+
+    Wdiget() : p(new int(0)) {}
+    explicit Wdiget(int v) : p(new int(v)) {}
+
+    // 3-5-0 rules
+    ~Wdiget() { delete p; }
+};
+
 int main()
 {
     std::cout << "=== Modern C++ Practice ===\n";
