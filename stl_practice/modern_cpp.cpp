@@ -162,6 +162,35 @@ struct Wdiget {
 
     // 3-5-0 rules
     ~Wdiget() { delete p; }
+
+    // copy constructor
+    Wdiget(const Wdiget& other) : p(new int(*other.p)) {}
+
+    // copy assignment
+    Wdiget& operator=(const Wdiget& other)
+    {
+        if(this != &other) {
+            delete p;
+            p = new int(*other.p);
+        }
+
+        return *this;
+    }
+
+    // move constructor
+    Wdiget(Wdiget&& other) noexcept : p(other.p) { other.p = nullptr; }
+
+    // move assignment
+    Wdiget& operator=(Wdiget&& other)
+    {
+        if(this != &other) {
+            delete p;
+            p = other.p;
+            other.p = nullptr;
+        }
+         return *this;
+    }
+
 };
 
 int main()
