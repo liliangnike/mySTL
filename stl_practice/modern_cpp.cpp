@@ -163,10 +163,10 @@ struct Wdiget {
     // 3-5-0 rules
     ~Wdiget() { delete p; }
 
-    // copy constructor
+    // copy constructor - deep copy, other.p is address. new memory requires value.
     Wdiget(const Wdiget& other) : p(new int(*other.p)) {}
 
-    // copy assignment
+    // copy assignment - deep copy
     Wdiget& operator=(const Wdiget& other)
     {
         if(this != &other) {
@@ -177,12 +177,13 @@ struct Wdiget {
         return *this;
     }
 
-    // move constructor
+    // move constructor - take/move pointer ownership
     Wdiget(Wdiget&& other) noexcept : p(other.p) { other.p = nullptr; }
 
     // move assignment
     Wdiget& operator=(Wdiget&& other)
     {
+        // other address
         if(this != &other) {
             delete p;
             p = other.p;
