@@ -194,6 +194,21 @@ struct Wdiget {
 
 };
 
+void practice_move()
+{
+    TEST("move semantics");
+
+    Wdiget a(10);
+    Wdiget b = a; // copy constructor, a is still valid
+    assert(*a.p == 10 && *b.p == 10);
+
+    Wdiget c = std::move(a);
+    assert(a.p == nullptr);
+    assert(*c.p == 10);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== Modern C++ Practice ===\n";
@@ -201,6 +216,7 @@ int main()
     practice_range_structured();
     practice_lambda();
     practice_smart_ptr();
+    practice_move();
     
     std::cout << "\nAll modern C++ practices passed!\n";
     return 0;
