@@ -209,6 +209,12 @@ void practice_move()
     PASS();
 }
 
+template <typename T>
+Wdiget make_wdiget(T&& args)
+{
+    return Wdiget(std::forward<T>(args));
+}
+
 int main()
 {
     std::cout << "=== Modern C++ Practice ===\n";
