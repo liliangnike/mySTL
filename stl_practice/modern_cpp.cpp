@@ -209,10 +209,25 @@ void practice_move()
     PASS();
 }
 
+// perfect forwarding: left value -> copy, right value -> move
 template <typename T>
-Wdiget make_wdiget(T&& args)
+Wdiget make_wdiget(T&& args)    // generic reference
 {
     return Wdiget(std::forward<T>(args));
+}
+
+void practice_forward()
+{
+    TEST("perfect forwarding");
+
+    Wdiget lv(5);
+    Wdiget x = make_wdiget(lv); // copy for left value
+    assert(*lv.p == 5 && *x.p == 5);
+
+    Wdiget y = make_wdiget(8);  // move for right value
+    assert(*y.p == 8);
+
+    PASS();
 }
 
 int main()
@@ -223,6 +238,7 @@ int main()
     practice_lambda();
     practice_smart_ptr();
     practice_move();
+    practice_forward();
     
     std::cout << "\nAll modern C++ practices passed!\n";
     return 0;
