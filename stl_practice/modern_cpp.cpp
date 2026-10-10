@@ -230,6 +230,25 @@ void practice_forward()
     PASS();
 }
 
+constexpr int square(int n) { return n * n; }
+enum class Color { RED, GREEN, BLUE};
+
+void practice_misc()
+{
+    TEST("nullptr / constexpr / enum class");
+    int *p = nullptr;
+    assert(p == nullptr);
+
+    static_assert(square(5) == 25, "square must be compile-time");
+    int n = 4;
+    assert(square(4) == 16);
+
+    Color c = Color::RED;
+    assert(c != Color::BLUE);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== Modern C++ Practice ===\n";
@@ -239,6 +258,7 @@ int main()
     practice_smart_ptr();
     practice_move();
     practice_forward();
+    practice_misc();
     
     std::cout << "\nAll modern C++ practices passed!\n";
     return 0;
