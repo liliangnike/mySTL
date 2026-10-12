@@ -87,6 +87,26 @@ void practice_accumulate()
     PASS();
 }
 
+void practice_erase_remove()
+{
+    TEST("erase-remove idiom");
+
+    std::vector<int> v = {1, 2, 3, 2, 4, 2, 5};
+
+    // remove all elements whose values are 2
+    v.erase(std::remove(v.begin(), v.end(), 2), v.end());
+    assert(v == std::vector<int>({1, 3, 4, 5}));
+
+    std::vector<int> v2 = {1, 2, 3, 4, 5, 6};
+
+    // remove all even numbers
+    auto new_end = std::remove_if(v2.begin(), v2.end(), [](int x){ return x % 2 == 0; });
+    v2.erase(new_end, v2.end());
+    assert(v2 == std::vector<int>({1, 3, 5}));
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Algorithm Practice === \n"; 
@@ -95,6 +115,7 @@ int main()
     practice_find();
     practice_count();
     practice_accumulate();
+    practice_erase_remove();
 
     std::cout << "\n=== All algorithm practice cases passed!\n";
     return 0;
