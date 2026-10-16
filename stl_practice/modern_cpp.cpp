@@ -249,6 +249,42 @@ void practice_misc()
     PASS();
 }
 
+class Base {
+public:
+    virtual void foo() {};
+    virtual void bar() final {};     // can't override
+    virtual ~Base() = default;
+};
+
+class Derived final : public Base {
+public:
+    void foo() override {};
+};
+
+class NoCopy {
+public:
+    NoCopy() = default;
+    NoCopy(const NoCopy&) = delete; // can't copy
+    NoCopy& operator=(const NoCopy&) = delete;
+    NoCopy(NoCopy&&) = default;
+    NoCopy& operator=(NoCopy&&) = default;
+};
+
+void practice_special_members()
+{
+    TEST("override / default / delete");
+
+    Derived d;
+    Base *p = &d;
+    p->foo();
+
+    NoCopy a;
+    NoCopy b = std::move(a);    // movable
+    // NoCopy c = a;            // could not be copied
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== Modern C++ Practice ===\n";
@@ -259,6 +295,7 @@ int main()
     practice_move();
     practice_forward();
     practice_misc();
+    practice_special_members();
     
     std::cout << "\nAll modern C++ practices passed!\n";
     return 0;
