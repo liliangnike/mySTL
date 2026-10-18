@@ -285,6 +285,28 @@ void practice_special_members()
     PASS();
 }
 
+class FileRAII {
+public:
+    explicit FileRAII(bool* flag) : closed(flag) { *closed = false; }
+    ~FileRAII() { *closed = true; }
+private:
+    bool* closed;
+};
+
+void practice_raii()
+{
+    TEST("RAII = Resource Acquisition Is Initialization");
+
+    bool closed = true;
+    {
+        FileRAII f(&closed);
+        assert(!closed);
+    }
+    assert(closed);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== Modern C++ Practice ===\n";
@@ -296,6 +318,7 @@ int main()
     practice_forward();
     practice_misc();
     practice_special_members();
+    practice_raii();
     
     std::cout << "\nAll modern C++ practices passed!\n";
     return 0;
