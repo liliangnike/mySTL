@@ -107,6 +107,24 @@ void practice_erase_remove()
     PASS();
 }
 
+void practice_minmax()
+{
+    TEST(" min_element / max_element");
+
+    using IntVec = std::vector<int>;
+    IntVec v = {3, 1, 4, 1, 5, 9, 2, 6};
+
+    auto min_iter = std::min_element(v.begin(), v.end());
+    auto max_iter = std::max_element(v.begin(), v.end());
+    assert(*min_iter == 1);
+    assert(*max_iter == 9);
+
+    auto [mn, mx] = std::minmax_element(v.begin(), v.end());
+    assert(*mn == 1 && *mx == 9);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Algorithm Practice === \n"; 
@@ -116,6 +134,7 @@ int main()
     practice_count();
     practice_accumulate();
     practice_erase_remove();
+    practice_minmax();
 
     std::cout << "\n=== All algorithm practice cases passed!\n";
     return 0;
