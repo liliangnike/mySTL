@@ -125,6 +125,28 @@ void practice_minmax()
     PASS();
 }
 
+void practice_unique()
+{
+    TEST("unique");
+
+    using IntVec = std::vector<int>;
+
+    IntVec v = {1, 2, 2, 3, 3, 3, 4, 5, 5};
+    // v is already sorted
+    auto new_begin = std::unique(v.begin(), v.end());
+    v.erase(new_begin, v.end());
+    assert(v == IntVec({1,2,3,4,5}));
+
+    IntVec v1 = {3, 1, 2, 1, 3};
+    // v1 is not sorted. Must be sorted before using unique
+    std::sort(v1.begin(), v1.end());
+    auto v2_new_begin = std::unique(v1.begin(), v1.end());
+    v1.erase(v2_new_begin, v1.end());
+    assert(v1 == IntVec({1, 2, 3}));
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Algorithm Practice === \n"; 
@@ -135,6 +157,7 @@ int main()
     practice_accumulate();
     practice_erase_remove();
     practice_minmax();
+    practice_unique();
 
     std::cout << "\n=== All algorithm practice cases passed!\n";
     return 0;
