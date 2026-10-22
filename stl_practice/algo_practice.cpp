@@ -147,6 +147,35 @@ void practice_unique()
     PASS();
 }
 
+void practice_lambda()
+{
+    TEST("lambda capture mode");
+
+    int x = 10;
+    int y = 20;
+
+    // capture by value: x is copy, no impact on external. Also see below mutable example.
+    auto by_value = [x]() { return x + 1; };
+    assert(by_value() == 11);
+    x = 100;
+    assert(by_value() == 11);
+
+    // capture by reference: y is reference, internal modification updates external value
+    auto by_reference = [&y]() { return y += 1; };
+    by_reference();
+    assert(y == 21);
+
+    int z = 5;
+    auto mutable_lambda = [z]() mutable {
+        z += 1;     // modified the copied z
+        return z;
+    };
+    assert(mutable_lambda() == 6);
+    assert(z == 5);
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Algorithm Practice === \n"; 
@@ -158,6 +187,7 @@ int main()
     practice_erase_remove();
     practice_minmax();
     practice_unique();
+    practice_lambda();
 
     std::cout << "\n=== All algorithm practice cases passed!\n";
     return 0;
