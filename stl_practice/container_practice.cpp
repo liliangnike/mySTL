@@ -215,6 +215,50 @@ void practice_string()
     PASS();
 }
 
+// Iterator invalidation
+/*
+ * =====================================================================================
+ * STL CONTAINER ITERATOR INVALIDATION QUICK REFERENCE
+ * =====================================================================================
+ * Container         | Reallocation (Capacity Change)    | Erase / Pop                | Insert / Push
+ * ------------------+-----------------------------------+----------------------------+-----------------------------------
+ * vector / string   | ALL INVALIDATED                   | Erased element & ALL       | If reallocated: ALL INVALIDATED
+ *                   | (pointers, refs, iterators)       | elements AFTER IT invalid  | If no reallocation: elements AFTER
+ *                   |                                   | (elements before are safe) | insertion point invalid
+ * ------------------+-----------------------------------+----------------------------+-----------------------------------
+ * deque             | ALL ITERATORS INVALIDATED         | ALL ITERATORS, POINTERS,   | ALL ITERATORS INVALIDATED
+ *                   | (pointers/refs MAY remain valid)  | AND REFERENCES INVALIDATED | (except push_front/back: iterators
+ *                   |                                   |                            | invalid, but pointers/refs safe)
+ * ------------------+-----------------------------------+----------------------------+-----------------------------------
+ * list / forward_list| UNAFFECTED                       | ONLY the erased element    | NO ITERATORS INVALIDATED
+ *                   | (non-contiguous memory)           | is invalidated             |
+ * ------------------+-----------------------------------+----------------------------+-----------------------------------
+ * map / set /       | UNAFFECTED                        | ONLY the erased element    | NO ITERATORS INVALIDATED
+ * unordered_*       | (node-based / hash-bucket)        | is invalidated             | (unordered may re-hash/re-arrange)
+ * =====================================================================================
+ */
+void practice_iterator_invalid()
+{
+    TEST("iterator invalidation");
+
+    std::list<int> l = {1, 2, 3, 4};
+    auto a = l.begin();
+    auto b = std::next(a);
+    auto c = std::next(b);
+    l.erase(b);     // remove 2, b becomes invalid
+    assert(*a == 1);
+    assert(*c == 3);    // a and c still are valid
+    assert(l.size() == 3);
+
+    std::vector<int> v = {1, 2, 3, 4, 5};
+    for(auto it = v.begin(); it != v.end(); it++) {
+        if (*it % 2 == 0) it = v.erase(it);     // save the iterator. otherwise, all the iterators after this it are invalid
+    }
+    assert(v == std::vector<int>({1, 3, 5}));
+
+    PASS();
+}
+
 int main()
 {
     std::cout << "=== STL Container Practice ===\n";
@@ -225,6 +269,7 @@ int main()
     practice_adapters();
     practice_pair_tuple();
     practice_string();
+    practice_iterator_invalid();
 
     std::cout << "\nAll container practices passed!\n";
     return 0;
