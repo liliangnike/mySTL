@@ -20,6 +20,17 @@ private:
         return hash_func_(key) % buckets_.size();
     }
 
+    void rehash(size_t new_capacity) {
+        std::vector<std::list<KeyValuePair>> new_buckets;
+        for(const auto& bucket : buckets_) {
+            for(const auto& pair : bucket) {
+                size_t new_index = hash_func_(pair.first) % new_capacity;
+                new_buckets[new_index].push_back(pair);
+            }
+        }
+
+        buckets_ = std::move(new_buckets);
+    }
 public:
     // std::vector<int> a(5); -> 5 elements with value 0
     // buckets_(initial_sz) -> 16 empty list (buckets)
