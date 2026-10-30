@@ -44,16 +44,32 @@ public:
         }
 
         size_t idx = get_bucket_index(k);
-        for(auto& pair : buckets_) {
+        for(auto& pair : buckets_[idx]) {
             if(pair.first == k) {
                 // already in the bucket, just update the value
                 pair.second = v;
                 return false;
             }
         }
-        buckets_.push_back({k, v});
+        buckets_[idx].push_back({k, v});
         size_++;
         return true;
+    }
+
+    Value* find(const Key& k) {
+        size_t idx = get_bucket_index(k);
+        for(auto& pair : buckets_[idx]) {
+            if(pair.first == k) return &pair.second;
+        }
+
+        return nullptr;
+    }
+
+    Value& operator[](const Key& k) {
+        Value* v = find(k);
+        if(v) return *v;
+        insert(k, Value()); // insert a default value of Value type
+        return *find(k);
     }
 
     size_t size() const noexcept { return size_; }
